@@ -71,13 +71,14 @@ def get_recommendations(payload: RecRequest):
         details = product_metadata.get(sku, {})
         doc = details.get("document", {})
         
-        enriched_recs.append({
-            "sku": sku,
-            "score": rec['score'],
-            "name": doc.get("name", "Unknown Product"),
-            "image": doc.get("image_url", ""),
-            "price": doc.get("price", {}).get("USD", {}).get("default_formated", "N/A")
-        })
+        enriched_recs.append(sku)
+        # {
+        #     "sku": sku,
+        #     # "score": rec['score'],
+        #     # "name": doc.get("name", "Unknown Product"),
+        #     # "image": doc.get("image_url", ""),
+        #     # "price": doc.get("price", {}).get("USD", {}).get("default_formated", "N/A")
+        # })
         
     return {
         "input": payload.skus,

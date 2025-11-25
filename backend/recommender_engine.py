@@ -52,22 +52,19 @@ class SAREngine:
     def get_item_similarity_scores(self, target_skus: list, top_k=5):
         """
         Returns the most similar items to the input SKUs based on the trained matrix.
+        Uses get_item_based_topk which works for cold/new users (unseen during training).
         """
         if not self.is_trained:
             return []
 
-        # Use SAR's built-in recommend_k_items method instead of direct matrix access
-        # This handles the internal data structures properly
-        
         try:
-            # Create a dummy user with the cart items
-            # Format: user_id, item_id, rating (we use 1.0 as implicit feedback)
+            # Create DataFrame with cart items
+            # get_item_based_topk expects a DataFrame with item column (and optionally rating)
             cart_data = []
             for sku in target_skus:
                 cart_data.append({
-                    'Email': 'user5@example.com',
                     'MaterialNumber': sku,
-                    'QTY': 1.0
+                    'QTY': 1.0  # Rating column (optional, defaults to 1 if not provided)
                 })
             
             if not cart_data:
@@ -75,12 +72,17 @@ class SAREngine:
             
             cart_df = pd.DataFrame(cart_data)
             
-            # Get recommendations for this "user" with these items
-            recommendations = self.model.recommend_k_items(
-                cart_df,
+            # Use get_item_based_topk for cold-user/new-user recommendations
+            # This method uses item-item similarity to recommend items similar to the seed items
+            # It works for users not seen during training (cold-start users)
+            recommendations = self.model.get_item_based_topk(
+                items=cart_df,
                 top_k=top_k,
-                remove_seen=True
+                sort_top_k=True
             )
+            
+            # Filter out items that are already in the cart
+            recommendations = recommendations[~recommendations['MaterialNumber'].isin(target_skus)]
             
             # Format results
             results = []
