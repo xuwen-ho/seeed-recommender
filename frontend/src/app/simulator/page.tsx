@@ -51,9 +51,6 @@ export default function SimulatorPage() {
               <h1 className="text-2xl font-bold text-neutral-900">
                 Recommendation Simulator
               </h1>
-              <p className="text-sm text-neutral-500">
-                Build a user context and see AI-powered product suggestions
-              </p>
             </div>
           </div>
         </div>
@@ -73,11 +70,6 @@ export default function SimulatorPage() {
               </h2>
             </div>
             <div className="flex min-h-0 max-h-full flex-col rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
-              <p className="mb-4 text-sm text-neutral-600">
-                Search and add products to simulate a user&apos;s cart or browsing
-                history. The recommendation engine will use this context to
-                suggest related products.
-              </p>
               <ContextBuilder
                 selectedProducts={selectedProducts}
                 onChange={setSelectedProducts}
