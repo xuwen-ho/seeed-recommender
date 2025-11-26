@@ -49,7 +49,7 @@ class SAREngine:
         self.is_trained = True
         logging.info(f"SAR Training Complete. Matrix Shape: {self.model.item_similarity.shape}")
 
-    def get_item_similarity_scores(self, target_skus: list, top_k=5):
+    def get_item_similarity_scores(self, target_skus: list, top_k=10):
         """
         Returns the most similar items to the input SKUs based on the trained matrix.
         Uses get_item_based_topk which works for cold/new users (unseen during training).

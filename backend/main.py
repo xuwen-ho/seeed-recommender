@@ -11,8 +11,8 @@ logging.basicConfig(
 )
 
 # Import our modules
-from data_loader import get_data
 from recommender_engine import SAREngine
+from sql_data_loader import get_data_via_ssh
 
 app = FastAPI(title="Seeed Studio RecSys (SAR)")
 
@@ -31,7 +31,7 @@ product_metadata = {} # Map for fast lookups of names/images
 
 class RecRequest(BaseModel):
     skus: List[str]
-    top_k: int = 5
+    top_k: int = 10
 
 @app.on_event("startup")
 async def startup_event():
@@ -39,9 +39,8 @@ async def startup_event():
     print("--- SYSTEM STARTUP ---")
     
     # 1. Load Data (Mocking SQL/JSON)
-    df_transactions, products_map = get_data()
-    product_metadata = products_map
-    print(f"Loaded {len(df_transactions)} transactions and {len(products_map)} products.")
+    df_transactions = get_data_via_ssh()
+    print(f"Loaded {len(df_transactions)} transactions")
     
     # 2. Train Model
     rec_engine.train(df_transactions)
@@ -67,18 +66,7 @@ def get_recommendations(payload: RecRequest):
     enriched_recs = []
     for rec in raw_recs:
         sku = rec['sku']
-        # Lookup details in our product map
-        details = product_metadata.get(sku, {})
-        doc = details.get("document", {})
-        
         enriched_recs.append(sku)
-        # {
-        #     "sku": sku,
-        #     # "score": rec['score'],
-        #     # "name": doc.get("name", "Unknown Product"),
-        #     # "image": doc.get("image_url", ""),
-        #     # "price": doc.get("price", {}).get("USD", {}).get("default_formated", "N/A")
-        # })
         
     return {
         "input": payload.skus,
