@@ -40,7 +40,7 @@ export default function RecResults({ inputSkus }: RecResultsProps) {
           },
           body: JSON.stringify({
             skus: inputSkus,
-            top_k: 5,
+            top_k: 10,
           }),
         });
 
