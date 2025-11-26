@@ -72,7 +72,7 @@ export default function SimulatorPage() {
                 Build User Context
               </h2>
             </div>
-            <div className="flex min-h-0 flex-1 flex-col rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+            <div className="flex min-h-0 max-h-full flex-col rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
               <p className="mb-4 text-sm text-neutral-600">
                 Search and add products to simulate a user&apos;s cart or browsing
                 history. The recommendation engine will use this context to
@@ -105,7 +105,7 @@ export default function SimulatorPage() {
                 AI Recommendations
               </h2>
             </div>
-            <div className="min-h-0 flex-1 overflow-y-auto rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+            <div className="min-h-0 max-h-full overflow-y-auto rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
               <RecResults inputSkus={inputSkus} />
             </div>
           </section>

@@ -206,7 +206,7 @@ export default function ContextBuilder({
       </div>
 
       {/* Selected Products */}
-      <div className="min-h-0 flex-1 overflow-y-auto rounded-lg border border-dashed border-neutral-300 bg-neutral-50 p-4">
+      <div className={`rounded-lg border border-dashed border-neutral-300 bg-neutral-50 p-4 ${selectedProducts.length > 0 ? 'min-h-0 flex-1 overflow-y-auto' : ''}`}>
         <h3 className="mb-3 text-sm font-medium text-neutral-600">
           Context Products ({selectedProducts.length})
         </h3>
